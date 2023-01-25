@@ -3,6 +3,9 @@
 ## TL;DR
 > Ideal para propósitos gerais, cenários em que features de pesquisa mais robustas encontradas em search engine específicas, como **ElasticSearch**, não são necessárias.
 
+
+Uma collection pode ter somente **um** índice `text search`, mas o índice pode comtemplar mais de um campo da collection.
+
 ## Features
 
 ```js
@@ -90,8 +93,32 @@ db.coffees.find({
 
 Todos os registros são retornados já que as palavras pesquisadas estão separadas.
 
+## Portuguese
+
+```js
+db.movies.insertMany([
+    { title: 'Atração Fatal' },
+    { title: 'Cão de Briga' },
+    { title: 'Os Caçadores' },
+])
+
+db.movies.createIndex(
+    { title: 'text' },
+    { default_language: "portuguese" }
+)
+
+db.movies.find({
+    $text: { $search: "cacador" }
+})
+```
+
 ## Referências:
 * https://www.mongodb.com/docs/drivers/node/current/fundamentals/crud/read-operations/text/
 * https://www.mongodb.com/docs/v4.2/reference/operator/query/text/#text-query-operator-behavior
 * https://www.digitalocean.com/community/tutorials/how-to-perform-full-text-search-in-mongodb
 * https://www.mongodb.com/docs/manual/reference/text-search-languages/
+* https://www.mongodb.com/docs/manual/reference/text-search-languages/
+* https://www.mongodb.com/docs/manual/tutorial/specify-language-for-text-index/
+* https://www.mongodb.com/docs/manual/core/index-text/#std-label-index-feature-text
+
+
